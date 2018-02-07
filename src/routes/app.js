@@ -83,14 +83,14 @@ const App = ({
     location,
   }
 
-  if (openPages && openPages.includes(pathname)) {
+  if (openPages && openPages.includes(pathname)) { // 如果pathname是/login的话直接全屏显示login页面，openPages: ['/login']
     return (<div>
       <Loader fullScreen spinning={loading.effects['app/query']} />
       {children}
     </div>)
   }
 
-  return (
+  return ( // 否则输出其他页面
     <div>
       <Loader fullScreen spinning={loading.effects['app/query']} />
       <Helmet>
@@ -102,7 +102,7 @@ const App = ({
       </Helmet>
 
       <Layout className={classnames({ [styles.dark]: darkTheme, [styles.light]: !darkTheme })}>
-        {!isNavbar && <Sider
+        {!isNavbar && <Sider // 是否输出左则菜单
           trigger={null}
           collapsible
           collapsed={siderFold}

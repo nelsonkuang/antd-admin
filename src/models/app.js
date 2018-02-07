@@ -12,13 +12,13 @@ import queryString from 'query-string'
 const { prefix } = config
 
 export default {
-  namespace: 'app',
+  namespace: 'app', // APP的state初始状态
   state: {
-    user: {},
-    permissions: {
+    user: {}, // 用户信息
+    permissions: { // 用户的权限
       visit: [],
     },
-    menu: [
+    menu: [ // 用户初始菜单，默认大家都有1首页
       {
         id: 1,
         icon: 'laptop',
@@ -27,28 +27,28 @@ export default {
       },
     ],
     menuPopoverVisible: false,
-    siderFold: window.localStorage.getItem(`${prefix}siderFold`) === 'true',
-    darkTheme: window.localStorage.getItem(`${prefix}darkTheme`) === 'true',
-    isNavbar: document.body.clientWidth < 769,
-    navOpenKeys: JSON.parse(window.localStorage.getItem(`${prefix}navOpenKeys`)) || [],
-    locationPathname: '',
-    locationQuery: {},
+    siderFold: window.localStorage.getItem(`${prefix}siderFold`) === 'true', // 默认展开侧边？
+    darkTheme: window.localStorage.getItem(`${prefix}darkTheme`) === 'true', // 默认黑色？
+    isNavbar: document.body.clientWidth < 769, // 手机模式？展示或者隐藏左侧菜单栏
+    navOpenKeys: JSON.parse(window.localStorage.getItem(`${prefix}navOpenKeys`)) || [], // 默认展开的菜单
+    locationPathname: '', // 当前url路径
+    locationQuery: {}, // 当前url参数
   },
   subscriptions: {
 
     setupHistory ({ dispatch, history }) {
       history.listen((location) => {
-        dispatch({
+        dispatch({ // 监听路由url变化，更新url路径与参数
           type: 'updateState',
           payload: {
             locationPathname: location.pathname,
-            locationQuery: queryString.parse(location.search),
+            locationQuery: queryString.parse(location.search), // 把参数串格式转为json obj
           },
         })
       })
     },
 
-    setup ({ dispatch }) {
+    setup ({ dispatch }) { // 初始化，监听resize动作
       dispatch({ type: 'query' })
       let tid
       window.onresize = () => {
@@ -67,11 +67,11 @@ export default {
     }, { call, put, select }) {
       const { success, user } = yield call(query, payload)
       const { locationPathname } = yield select(_ => _.app)
-      if (success && user) {
+      if (success && user) { // 如果已登录，动态生成菜单并记录路由
         const { list } = yield call(menusService.query)
         const { permissions } = user
-        let menu = list
-        if (permissions.role === EnumRoleType.ADMIN || permissions.role === EnumRoleType.DEVELOPER) {
+        let menu = list 
+        if (permissions.role === EnumRoleType.ADMIN || permissions.role === EnumRoleType.DEVELOPER) { // 枚举类型，可代表多种类型的变量
           permissions.visit = list.map(item => item.id)
         } else {
           menu = list.filter((item) => {
@@ -83,7 +83,7 @@ export default {
             return cases.every(_ => _)
           })
         }
-        yield put({
+        yield put({ // 分发type为updateState的action
           type: 'updateState',
           payload: {
             user,
@@ -91,13 +91,13 @@ export default {
             menu,
           },
         })
-        if (location.pathname === '/login') {
+        if (location.pathname === '/login') { // 路由记录为dashboard
           yield put(routerRedux.push({
             pathname: '/dashboard',
           }))
         }
-      } else if (config.openPages && config.openPages.indexOf(locationPathname) < 0) {
-        yield put(routerRedux.push({
+      } else if (config.openPages && config.openPages.indexOf(locationPathname) < 0) { // 如果未登录，跳登录页并设置(search)url带from参数
+        yield put(routerRedux.push({ 
           pathname: '/login',
           search: queryString.stringify({
             from: locationPathname,
@@ -109,7 +109,7 @@ export default {
     * logout ({
       payload,
     }, { call, put }) {
-      const data = yield call(logout, parse(payload))
+      const data = yield call(logout, parse(payload)) // 登出时，如果传payload为参数，就用parse把参数转化为json对象，本例子中 payload 为undefined 则 parse(payload) 为{}
       if (data.success) {
         yield put({ type: 'query' })
       } else {

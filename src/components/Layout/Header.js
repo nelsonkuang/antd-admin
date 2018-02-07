@@ -23,7 +23,7 @@ const Header = ({
   }
   return (
     <Layout.Header className={styles.header}>
-      {isNavbar
+      {isNavbar // 是否显示左上角移动动端菜单及其下拉的所有菜单，trigger click后显示下面popover的content里的Menus菜单内容
         ? <Popover placement="bottomLeft" onVisibleChange={switchMenuPopover} visible={menuPopoverVisible} overlayClassName={styles.popovermenu} trigger="click" content={<Menus {...menusProps} />}>
           <div className={styles.button}>
             <Icon type="bars" />
@@ -66,7 +66,7 @@ Header.propTypes = {
   switchSider: PropTypes.func,
   siderFold: PropTypes.bool,
   isNavbar: PropTypes.bool,
-  menuPopoverVisible: PropTypes.bool,
+  menuPopoverVisible: PropTypes.bool, // 是否展开左上角下拉菜单
   location: PropTypes.object,
   switchMenuPopover: PropTypes.func,
   navOpenKeys: PropTypes.array,
