@@ -50,6 +50,9 @@ const Routers = function ({ history, app }) {
       path: '/UIElement/editor',
       component: () => import('./routes/UIElement/editor/'),
     }, {
+      path: '/UIElement/wangEditor',
+      component: () => import('./routes/UIElement/wangEditor/'),
+    }, {
       path: '/chart/ECharts',
       component: () => import('./routes/chart/ECharts/'),
     }, {

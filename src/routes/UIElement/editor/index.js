@@ -4,6 +4,8 @@ import { convertToRaw } from 'draft-js'
 import { Row, Col, Card } from 'antd'
 import draftToHtml from 'draftjs-to-html'
 import draftToMarkdown from 'draftjs-to-markdown'
+// import emoji from 'emoji'
+// import 'emoji/lib/emoji.css'
 // https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js
 
 export default class EditorPage extends React.Component {
@@ -18,6 +20,16 @@ export default class EditorPage extends React.Component {
       editorContent,
     })
   }
+  componentDidMount () {
+    /*let _this = this;
+    _this.editor.querySelector('.rdw-emoji-wrapper').onclick = function () {
+      setTimeout (function () {
+        _this.editor.querySelectorAll('.rdw-emoji-modal .rdw-emoji-icon').forEach(item => {
+          item.innerHtml = emoji.unifiedToHTML(item.innerText);
+        });
+      }, 1000);
+    } */ // emoji是个坑
+  }
   render () {
     const { editorContent } = this.state
     const colProps = {
@@ -31,7 +43,7 @@ export default class EditorPage extends React.Component {
       borderColor: '#F1F1F1',
       padding: '16px 8px',
     }
-    return (<div className="content-inner">
+    return (<div className="content-inner" ref={ editor => { this.editor = editor }} >
       <Row gutter={32}>
         <Col {...colProps}>
           <Card title="Editor" style={{ overflow: 'visible' }}>
@@ -44,6 +56,26 @@ export default class EditorPage extends React.Component {
               }}
               editorState={editorContent}
               onEditorStateChange={this.onEditorStateChange}
+              toolbar={{
+                options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'image', 'remove', 'history'],
+                image: {
+                  className: undefined,
+                  component: undefined,
+                  popupClassName: undefined,
+                  urlEnabled: true,
+                  uploadEnabled: true,
+                  alignmentEnabled: true,
+                  uploadCallback: function () {
+                    // 这里处理上传图片代码
+                  },
+                  inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
+                  alt: { present: false, mandatory: false },
+                  defaultSize: {
+                    height: 'auto',
+                    width: 'auto',
+                  },
+                },
+              }}
             />
           </Card>
         </Col>

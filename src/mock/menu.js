@@ -78,7 +78,7 @@ let database = [
     id: '45',
     bpid: '4',
     mpid: '4',
-    name: '56pxor',
+    name: 'Editor',
     icon: 'edit',
     route: '/UIElement/editor',
   },
@@ -89,6 +89,14 @@ let database = [
     name: 'layer (Function)',
     icon: 'credit-card',
     route: '/UIElement/layer',
+  },
+  {
+    id: '47',
+    bpid: '4',
+    mpid: '4',
+    name: 'wangEditor',
+    icon: 'form',
+    route: '/UIElement/wangEditor',
   },
   {
     id: '5',
