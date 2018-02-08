@@ -74,14 +74,17 @@ export default {
         if (permissions.role === EnumRoleType.ADMIN || permissions.role === EnumRoleType.DEVELOPER) { // 枚举类型，可代表多种类型的变量
           permissions.visit = list.map(item => item.id)
         } else {
-          menu = list.filter((item) => {
+          menu = list.filter((item) => { // 过滤没有权限的菜单，用[true, true, true].every(_ => _)来过滤
             const cases = [
               permissions.visit.includes(item.id),
               item.mpid ? permissions.visit.includes(item.mpid) || item.mpid === '-1' : true,
               item.bpid ? permissions.visit.includes(item.bpid) : true,
             ]
+            // console.log(cases);
             return cases.every(_ => _)
           })
+
+          // console.log(menu);
         }
         yield put({ // 分发type为updateState的action
           type: 'updateState',

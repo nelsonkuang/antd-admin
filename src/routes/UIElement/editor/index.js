@@ -57,7 +57,7 @@ export default class EditorPage extends React.Component {
               editorState={editorContent}
               onEditorStateChange={this.onEditorStateChange}
               toolbar={{
-                options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'image', 'remove', 'history'],
+                // options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'image', 'remove', 'history'],
                 image: {
                   className: undefined,
                   component: undefined,
