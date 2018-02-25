@@ -46,7 +46,7 @@ const modal = ({
   return (
     <Modal {...modalOpts}>
       <Form layout="horizontal">
-        <FormItem label="Name" hasFeedback {...formItemLayout}>
+        <FormItem label="用户名" hasFeedback {...formItemLayout}>
           {getFieldDecorator('name', {
             initialValue: item.name,
             rules: [
@@ -56,17 +56,35 @@ const modal = ({
             ],
           })(<Input />)}
         </FormItem>
-        <FormItem label="NickName" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('nickName', {
-            initialValue: item.nickName,
-            rules: [
-              {
-                required: true,
-              },
-            ],
-          })(<Input />)}
+        <FormItem
+          {...formItemLayout}
+          label="密码"
+        >
+          {getFieldDecorator('password', {
+            rules: [/*{
+              required: true, message: 'Please input your password!',
+            }, {
+              validator: this.checkConfirm,
+            }*/],
+          })(
+            <Input type="password" />
+          )}
         </FormItem>
-        <FormItem label="Gender" hasFeedback {...formItemLayout}>
+        <FormItem
+          {...formItemLayout}
+          label="确认密码"
+        >
+          {getFieldDecorator('confirm', {
+            rules: [/*{
+              required: true, message: 'Please confirm your password!',
+            }, {
+              validator: this.checkPassword,
+            }*/],
+          })(
+            <Input type="password" />
+          )}
+        </FormItem>
+        <FormItem label="用户角色" hasFeedback {...formItemLayout}>
           {getFieldDecorator('isMale', {
             initialValue: item.isMale,
             rules: [
@@ -76,22 +94,12 @@ const modal = ({
               },
             ],
           })(<Radio.Group>
-            <Radio value>Male</Radio>
-            <Radio value={false}>Female</Radio>
+            <Radio value={'admin'}>管理员</Radio>
+            <Radio value={'developer'}>开发者</Radio>
+            <Radio value={'quest'}>普通用户</Radio>
              </Radio.Group>)}
         </FormItem>
-        <FormItem label="Age" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('age', {
-            initialValue: item.age,
-            rules: [
-              {
-                required: true,
-                type: 'number',
-              },
-            ],
-          })(<InputNumber min={18} max={100} />)}
-        </FormItem>
-        <FormItem label="Phone" hasFeedback {...formItemLayout}>
+        <FormItem label="联系电话" hasFeedback {...formItemLayout}>
           {getFieldDecorator('phone', {
             initialValue: item.phone,
             rules: [
@@ -103,7 +111,7 @@ const modal = ({
             ],
           })(<Input />)}
         </FormItem>
-        <FormItem label="E-mail" hasFeedback {...formItemLayout}>
+        <FormItem label="邮箱地址" hasFeedback {...formItemLayout}>
           {getFieldDecorator('email', {
             initialValue: item.email,
             rules: [
@@ -114,20 +122,6 @@ const modal = ({
               },
             ],
           })(<Input />)}
-        </FormItem>
-        <FormItem label="Address" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('address', {
-            initialValue: item.address && item.address.split(' '),
-            rules: [
-              {
-                required: true,
-              },
-            ],
-          })(<Cascader
-            style={{ width: '100%' }}
-            options={city}
-            placeholder="Pick an address"
-          />)}
         </FormItem>
       </Form>
     </Modal>

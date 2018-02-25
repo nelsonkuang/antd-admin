@@ -18,7 +18,7 @@ let database = [
   {
     id: '8',
     bpid: '1',
-    name: 'Admin Users',
+    name: 'System Users',
     icon: 'team',
     route: '/adminUsers',
   },

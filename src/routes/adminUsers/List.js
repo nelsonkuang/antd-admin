@@ -28,21 +28,10 @@ const List = ({ onDeleteItem, onEditItem, isMotion, location, ...tableProps }) =
 
   const columns = [
     {
-      title: '头像',
-      dataIndex: 'avatar',
-      key: 'avatar',
-      width: 64,
-      className: styles.avatar,
-      render: text => <img alt={'avatar'} width={24} src={text} />,
-    }, {
       title: '用户名',
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => text,
-    }, {
-      title: '密码',
-      dataIndex: 'nickName',
-      key: 'nickName',
     }, {
       title: '用户角色',
       dataIndex: 'isMale',

@@ -25,7 +25,7 @@ const AdminUsers = ({
     visible: modalVisible,
     maskClosable: false,
     confirmLoading: loading.effects['adminUsers/update'],
-    title: `${modalType === 'create' ? 'Create SystemUsers' : 'Update SystemUsers'}`,
+    title: `${modalType === 'create' ? '创建系统用户' : '更新系统用户'}`,
     wrapClassName: 'vertical-center-modal',
     onOk (data) {
       dispatch({
