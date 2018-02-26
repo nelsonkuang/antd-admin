@@ -29,16 +29,16 @@ const List = ({ onDeleteItem, onEditItem, isMotion, location, ...tableProps }) =
   const columns = [
     {
       title: '用户名',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'username',
+      key: 'username',
       render: (text, record) => text,
     }, {
       title: '用户角色',
-      dataIndex: 'isMale',
-      key: 'isMale',
-      render: text => (<span>{text
-        ? 'Male'
-        : 'Female'}</span>),
+      dataIndex: 'permissions',
+      key: 'permissions',
+      render: permission => (<span>{permission.role === 'admin'
+        ? '管理员'
+        : permission.role === 'developer' ? '开发者' : '普通用户'}</span>),
     }, {
       title: '联系电话',
       dataIndex: 'phone',

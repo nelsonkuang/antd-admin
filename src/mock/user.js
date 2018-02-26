@@ -41,28 +41,42 @@ const userPermission = {
     role: EnumRoleType.ADMIN,
   },
   DEVELOPER: {
+    visit: ['1', '2', '21', '7', '3', '4', '41', '42', '43', '44', '45', '46', '47', '5', '51', '52', '53', '6', '61', '62', '621', '622'],
     role: EnumRoleType.DEVELOPER,
   },
 }
 
-const adminUsers = [
-  {
-    id: 0,
-    username: 'admin',
-    password: 'admin',
-    permissions: userPermission.ADMIN,
-  }, {
-    id: 1,
-    username: 'guest',
-    password: 'guest',
-    permissions: userPermission.DEFAULT,
-  }, {
-    id: 2,
-    username: '吴彦祖',
-    password: '123456',
-    permissions: userPermission.DEVELOPER,
-  },
-]
+const adminUsersDB = Mock.mock({
+  'data': [
+    {
+      id: '@id',
+      username: 'admin',
+      password: 'admin', // 生产环境不返回密码，并且密码会被加密
+      phone: /^1[34578]\d{9}$/,
+      email: '@email',
+      permissions: userPermission.ADMIN,
+      createTime: '@datetime',
+    }, {
+      id: '@id',
+      username: 'guest',
+      password: 'guest', // 生产环境不返回密码，并且密码会被加密
+      phone: /^1[34578]\d{9}$/,
+      email: '@email',
+      permissions: userPermission.DEFAULT,
+      createTime: '@datetime',
+    }, {
+      id: '@id',
+      username: 'developer',
+      password: 'developer', // 生产环境不返回密码，并且密码会被加密
+      phone: /^1[34578]\d{9}$/,
+      email: '@email',
+      permissions: userPermission.DEVELOPER,
+      createTime: '@datetime',
+    }
+  ]
+});
+
+let adminUsers = adminUsersDB.data
 
 const queryArray = (array, key, keyAlias = 'key') => {
   if (!(array instanceof Array)) {
@@ -238,14 +252,12 @@ module.exports = {
     pageSize = pageSize || 10
     page = page || 1
 
-    let newData = database
+    let newData = adminUsers
     for (let key in other) {
       if ({}.hasOwnProperty.call(other, key)) {
         newData = newData.filter((item) => {
           if ({}.hasOwnProperty.call(item, key)) {
-            if (key === 'address') {
-              return other[key].every(iitem => item[key].indexOf(iitem) > -1)
-            } else if (key === 'createTime') {
+            if (key === 'createTime') {
               const start = new Date(other[key][0]).getTime()
               const end = new Date(other[key][1]).getTime()
               const now = new Date(item[key]).getTime()
@@ -270,7 +282,7 @@ module.exports = {
 
   [`DELETE ${apiPrefix}/adminUsers`] (req, res) {
     const { ids } = req.body
-    database = database.filter(item => !ids.some(_ => _ === item.id))
+    adminUsers = adminUsers.filter(item => !ids.some(_ => _ === item.id))
     res.status(204).end()
   },
 
@@ -278,17 +290,25 @@ module.exports = {
   [`POST ${apiPrefix}/adminUser`] (req, res) {
     const newData = req.body
     newData.createTime = Mock.mock('@now')
-    newData.avatar = newData.avatar || Mock.Random.image('100x100', Mock.Random.color(), '#757575', 'png', newData.nickName.substr(0, 1))
     newData.id = Mock.mock('@id')
-
-    database.unshift(newData)
-
+    switch (newData.role) {
+      case EnumRoleType.ADMIN:
+        newData.permissions = userPermission.ADMIN
+        break;
+      case EnumRoleType.DEVELOPER:
+        newData.permissions = userPermission.DEVELOPER
+        break; 
+      default:
+        newData.permissions = userPermission.DEFAULT
+    }
+    adminUsers.unshift(newData)
+    console.log(adminUsers)
     res.status(200).end()
   },
 
   [`GET ${apiPrefix}/adminUser/:id`] (req, res) {
     const { id } = req.params
-    const data = queryArray(database, id, 'id')
+    const data = queryArray(adminUsers, id, 'id')
     if (data) {
       res.status(200).json(data)
     } else {
@@ -298,9 +318,9 @@ module.exports = {
 
   [`DELETE ${apiPrefix}/adminUser/:id`] (req, res) {
     const { id } = req.params
-    const data = queryArray(database, id, 'id')
+    const data = queryArray(adminUsers, id, 'id')
     if (data) {
-      database = database.filter(item => item.id !== id)
+      adminUsers = adminUsers.filter(item => item.id !== id)
       res.status(204).end()
     } else {
       res.status(404).json(NOTFOUND)
@@ -312,15 +332,26 @@ module.exports = {
     const editItem = req.body
     let isExist = false
 
-    database = database.map((item) => {
+    adminUsers = adminUsers.map((item) => {
       if (item.id === id) {
         isExist = true
+        switch (editItem.role) {
+          case EnumRoleType.ADMIN:
+            editItem.permissions = userPermission.ADMIN
+            break;
+          case EnumRoleType.DEVELOPER:
+            editItem.permissions = userPermission.DEVELOPER
+            break; 
+          default:
+            editItem.permissions = userPermission.DEFAULT
+        }
         return Object.assign({}, item, editItem)
       }
       return item
     })
 
     if (isExist) {
+      console.log(adminUsers)
       res.status(201).end()
     } else {
       res.status(404).json(NOTFOUND)

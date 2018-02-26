@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { FilterItem } from 'components'
 import { Form, Button, Row, Col, DatePicker, Input, Cascader, Switch } from 'antd'
-import city from '../../utils/city'
 
 const { Search } = Input
 const { RangePicker } = DatePicker
@@ -68,7 +67,7 @@ const Filter = ({
     fields = handleFields(fields)
     onFilterChange(fields)
   }
-  const { name, address } = filter
+  const { username } = filter
 
   let initialCreateTime = []
   if (filter.createTime && filter.createTime[0]) {
@@ -81,18 +80,10 @@ const Filter = ({
   return (
     <Row gutter={24}>
       <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
-        {getFieldDecorator('name', { initialValue: name })(<Search placeholder="Search Name" onSearch={handleSubmit} />)}
-      </Col>
-      <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
-        {getFieldDecorator('address', { initialValue: address })(<Cascader
-          style={{ width: '100%' }}
-          options={city}
-          placeholder="Please pick an address"
-          onChange={handleChange.bind(null, 'address')}
-        />)}
+        {getFieldDecorator('username', { initialValue: username })(<Search placeholder="查找用户" onSearch={handleSubmit} />)}
       </Col>
       <Col {...ColProps} xl={{ span: 6 }} md={{ span: 8 }} sm={{ span: 12 }}>
-        <FilterItem label="Createtime">
+        <FilterItem label="创建时间">
           {getFieldDecorator('createTime', { initialValue: initialCreateTime })(<RangePicker style={{ width: '100%' }} onChange={handleChange.bind(null, 'createTime')} />)}
         </FilterItem>
       </Col>

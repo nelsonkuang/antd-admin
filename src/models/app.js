@@ -71,10 +71,10 @@ export default {
         const { list } = yield call(menusService.query)
         const { permissions } = user
         let menu = list 
-        if (permissions.role === EnumRoleType.ADMIN || permissions.role === EnumRoleType.DEVELOPER) { // 枚举类型，可代表多种类型的变量
+        if (permissions.role === EnumRoleType.ADMIN) { // 枚举类型，可代表多种类型的变量，如果是超级管理员则可以看到所有的菜单
           permissions.visit = list.map(item => item.id)
         } else {
-          menu = list.filter((item) => { // 过滤没有权限的菜单，用[true, true, true].every(_ => _)来过滤
+          menu = list.filter((item) => { // 过滤没有权限的菜单，用[true, true, true].every(_ => _)来过滤，该菜单父菜单有权限才可以显示
             const cases = [
               permissions.visit.includes(item.id),
               item.mpid ? permissions.visit.includes(item.mpid) || item.mpid === '-1' : true,
