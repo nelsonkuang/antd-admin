@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { LocaleProvider } from 'antd';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 import { Switch, Route, Redirect, routerRedux } from 'dva/router'
 import dynamic from 'dva/dynamic'
 import App from 'routes/app'
@@ -69,30 +71,36 @@ const Routers = function ({ history, app }) {
       path: '/post',
       models: () => [import('./models/post')],
       component: () => import('./routes/post/'),
+    }, {
+      path: '/basic-form',
+      models: () => [import('./models/form')],
+      component: () => import('./routes/forms/BasicForm'),
     },
   ]
 
   return (
-    <ConnectedRouter history={history}>
-      <App>
-        <Switch>
-          <Route exact path="/" render={() => (<Redirect to="/dashboard" />)} />
-          {
-            routes.map(({ path, ...dynamics }, key) => (
-              <Route key={key}
-                exact
-                path={path}
-                component={dynamic({
-                  app,
-                  ...dynamics,
-                })}
-              />
-            ))
-          }
-          <Route component={error} />
-        </Switch>
-      </App>
-    </ConnectedRouter>
+    <LocaleProvider locale={zhCN}>
+      <ConnectedRouter history={history}>
+        <App>
+          <Switch>
+            <Route exact path="/" render={() => (<Redirect to="/dashboard" />)} />
+            {
+              routes.map(({ path, ...dynamics }, key) => (
+                <Route key={key}
+                  exact
+                  path={path}
+                  component={dynamic({
+                    app,
+                    ...dynamics,
+                  })}
+                />
+              ))
+            }
+            <Route component={error} />
+          </Switch>
+        </App>
+      </ConnectedRouter>
+    </LocaleProvider>
   )
 }
 
