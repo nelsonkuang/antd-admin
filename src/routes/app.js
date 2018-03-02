@@ -30,7 +30,10 @@ const App = ({
   pathname = pathname.startsWith('/') ? pathname : `/${pathname}`
   const { iconFontJS, iconFontCSS, logo } = config
   const current = menu.filter(item => pathToRegexp(item.route || '').exec(pathname))
-  const hasPermission = current.length ? permissions.visit.includes(current[0].id) : false
+  let hasPermission = current.length ? permissions.visit.includes(current[0].id) : false
+  if(!hasPermission && permissions.visit.includes('92') && pathname.startsWith('/form/step-form/')) { // 如果有92步骤一权限，不拦截
+    hasPermission = true;
+  }
   const { href } = window.location
 
   if (lastHref !== href) {

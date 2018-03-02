@@ -11,6 +11,10 @@ const Bread = ({ menu, location }) => {
   let pathArray = []
   let current
   for (let index in menu) {
+    /*if (menu[index] && location.pathname.startsWith('/form/step-form/') && pathToRegexp(menu[index].route).exec('/form/step-form/')) { // 针对分步表单修改选中菜单
+      current = menu[index]
+      break
+    }*/
     if (menu[index].route && pathToRegexp(menu[index].route).exec(location.pathname)) {
       current = menu[index]
       break

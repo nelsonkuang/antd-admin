@@ -72,9 +72,21 @@ const Routers = function ({ history, app }) {
       models: () => [import('./models/post')],
       component: () => import('./routes/post/'),
     }, {
-      path: '/basic-form',
+      path: '/form/basic-form',
       models: () => [import('./models/form')],
       component: () => import('./routes/forms/BasicForm'),
+    }, {
+      path: '/form/step-form',
+      models: () => [import('./models/form')],
+      component: () => import('./routes/forms/StepForm/Info'),
+    }, {
+      path: '/form/step-form/confirm',
+      models: () => [import('./models/form')],
+      component: () => import('./routes/forms/StepForm/Confirm'),
+    }, {
+      path: '/form/step-form/result',
+      models: () => [import('./models/form')],
+      component: () => import('./routes/forms/StepForm/Result'),
     },
   ]
 
@@ -93,7 +105,7 @@ const Routers = function ({ history, app }) {
                     app,
                     ...dynamics,
                   })}
-                />
+                /> 
               ))
             }
             <Route component={error} />

@@ -26,7 +26,14 @@ let database = [
     bpid: '9',
     mpid: '9',
     name: '基础表单',
-    route: '/basic-form',
+    route: '/form/basic-form',
+  },
+  {
+    id: '92',
+    bpid: '9',
+    mpid: '9',
+    name: '分步表单',
+    route: '/form/step-form',
   },
   {
     id: '8',

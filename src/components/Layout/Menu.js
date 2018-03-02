@@ -82,6 +82,11 @@ const Menus = ({ siderFold, darkTheme, navOpenKeys, changeOpenKeys, menu, locati
   let currentMenu
   let defaultSelectedKeys
   for (let item of menu) {
+    if (item.route && location.pathname.startsWith('/form/step-form/') && pathToRegexp(item.route).exec('/form/step-form/')) { // 针对分步表单修改选中菜单
+      currentMenu = item
+      break
+    }
+
     if (item.route && pathToRegexp(item.route).exec(location.pathname)) {
       currentMenu = item
       break
