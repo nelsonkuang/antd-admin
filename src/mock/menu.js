@@ -36,6 +36,13 @@ let database = [
     route: '/form/step-form',
   },
   {
+    id: '93',
+    bpid: '9',
+    mpid: '9',
+    name: '高级表单',
+    route: '/form/advanced-form',
+  },
+  {
     id: '8',
     bpid: '1',
     name: 'System Users',

@@ -87,6 +87,10 @@ const Routers = function ({ history, app }) {
       path: '/form/step-form/result',
       models: () => [import('./models/form')],
       component: () => import('./routes/forms/StepForm/Result'),
+    }, {
+      path: '/form/advanced-form',
+      models: () => [import('./models/form')],
+      component: () => import('./routes/forms/AdvancedForm'),
     },
   ]
 

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Card, Button, Form, Icon, Col, Row, DatePicker, TimePicker, Input, Select, Popover } from 'antd';
 import { connect } from 'dva';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { Page } from 'components'
 import FooterToolbar from '../../components/FooterToolbar';
 import TableForm from './TableForm';
 import styles from './style.less';
@@ -112,11 +112,7 @@ class AdvancedForm extends PureComponent {
       );
     };
     return (
-      <PageHeaderLayout
-        title="高级表单"
-        content="高级表单常见于一次性输入和提交大批量数据的场景。"
-        wrapperClassName={styles.advancedForm}
-      >
+      <Page inner>
         <Card title="仓库管理" className={styles.card} bordered={false}>
           <Form layout="vertical" hideRequiredMark>
             <Row gutter={16}>
@@ -279,12 +275,11 @@ class AdvancedForm extends PureComponent {
             提交
           </Button>
         </FooterToolbar>
-      </PageHeaderLayout>
+      </Page>
     );
   }
 }
 
 export default connect(({ global, loading }) => ({
-  collapsed: global.collapsed,
   submitting: loading.effects['form/submitAdvancedForm'],
 }))(Form.create()(AdvancedForm));
