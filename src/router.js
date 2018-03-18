@@ -13,6 +13,10 @@ const Routers = function ({ history, app }) {
     app,
     component: () => import('./routes/error'),
   })
+  const error401 = dynamic({
+    app,
+    component: () => import('./routes/error/401'),
+  })
   const routes = [
     {
       path: '/dashboard',

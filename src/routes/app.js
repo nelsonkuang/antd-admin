@@ -11,6 +11,7 @@ import { classnames, config } from 'utils'
 import { Helmet } from 'react-helmet'
 import { withRouter } from 'dva/router'
 import Error from './error'
+import Error401 from './error/401'
 import '../themes/index.less'
 import './app.less'
 
@@ -87,12 +88,13 @@ const App = ({
   }
 
   if (openPages && openPages.includes(pathname)) { // 如果pathname是/login的话直接全屏显示login页面，openPages: ['/login']
+    console.log(pathname);
     return (<div>
       <Loader fullScreen spinning={loading.effects['app/query']} />
       {children}
     </div>)
   }
-
+  console.log(pathname);
   return ( // 否则输出其他页面
     <div>
       <Loader fullScreen spinning={loading.effects['app/query']} />
@@ -117,7 +119,8 @@ const App = ({
           <Header {...headerProps} />
           <Content>
             <Bread {...breadProps} />
-            {hasPermission ? children : <Error />}
+            {pathname === '/' && !hasPermission  ? <Error401 /> : (hasPermission ? children : <Error />)}
+            {/*hasPermission ? children : <Error />*/}
           </Content>
           <Footer >
             {config.footerText}

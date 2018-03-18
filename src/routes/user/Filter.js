@@ -18,7 +18,7 @@ const ColProps = {
 
 const TwoColProps = {
   ...ColProps,
-  xl: 96,
+  xl: 10,
 }
 
 const Filter = ({

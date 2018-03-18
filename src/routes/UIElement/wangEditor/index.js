@@ -26,8 +26,8 @@ export default class WangEditorPage extends React.Component {
   }
   render () {
     const colProps = {
-      lg: 12,
-      md: 24,
+      lg: 24,
+      md: 12,
     }
     return (<div className="content-inner" >
       <Row gutter={32}>
@@ -35,7 +35,7 @@ export default class WangEditorPage extends React.Component {
           <Card title="WangEditor" style={{ overflow: 'visible' }}>
             {/* 将生成编辑器 */}
             <div ref={ r => this.editorElem = r } />
-            <Button type="primary" onClick={this.clickHandle} style={{marginTop:15}}>获取内容</Button>    
+            <Button type="primary" onClick={this.clickHandle} style={{marginTop:15}}>获取内容</Button>
           </Card>
         </Col>
       </Row>
