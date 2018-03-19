@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import {
-  Form, Input, DatePicker, Select, Button, Card, InputNumber, Radio, Icon, Tooltip,
-} from 'antd';
-import { Page } from 'components'
+import { Form, Input, DatePicker, Select, Button, Card, InputNumber, Radio, Icon, Tooltip } from 'antd';
+import { Page } from 'components';
 import styles from './style.less';
 
 const FormItem = Form.Item;
@@ -23,7 +21,7 @@ class BasicForms extends PureComponent {
       }
     });
   }
-  render() {
+  render () {
     const { submitting } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
 
@@ -62,9 +60,7 @@ class BasicForms extends PureComponent {
                 rules: [{
                   required: true, message: '请输入标题',
                 }],
-              })(
-                <Input placeholder="给目标起个名字" />
-              )}
+              })(<Input placeholder="给目标起个名字" />)}
             </FormItem>
             <FormItem
               {...formItemLayout}
@@ -74,9 +70,7 @@ class BasicForms extends PureComponent {
                 rules: [{
                   required: true, message: '请选择起止日期',
                 }],
-              })(
-                <RangePicker style={{ width: '100%' }} placeholder={['开始日期', '结束日期']} />
-              )}
+              })(<RangePicker style={{ width: '100%' }} placeholder={['开始日期', '结束日期']} />)}
             </FormItem>
             <FormItem
               {...formItemLayout}
@@ -86,9 +80,7 @@ class BasicForms extends PureComponent {
                 rules: [{
                   required: true, message: '请输入目标描述',
                 }],
-              })(
-                <TextArea style={{ minHeight: 32 }} placeholder="请输入你的阶段性工作目标" rows={4} />
-              )}
+              })(<TextArea style={{ minHeight: 32 }} placeholder="请输入你的阶段性工作目标" rows={4} />)}
             </FormItem>
             <FormItem
               {...formItemLayout}
@@ -98,9 +90,7 @@ class BasicForms extends PureComponent {
                 rules: [{
                   required: true, message: '请输入衡量标准',
                 }],
-              })(
-                <TextArea style={{ minHeight: 32 }} placeholder="请输入衡量标准" rows={4} />
-              )}
+              })(<TextArea style={{ minHeight: 32 }} placeholder="请输入衡量标准" rows={4} />)}
             </FormItem>
             <FormItem
               {...formItemLayout}
@@ -116,25 +106,19 @@ class BasicForms extends PureComponent {
                 </span>
               }
             >
-              {getFieldDecorator('client')(
-                <Input placeholder="请描述你服务的客户，内部客户直接 @姓名／工号" />
-              )}
+              {getFieldDecorator('client')(<Input placeholder="请描述你服务的客户，内部客户直接 @姓名／工号" />)}
             </FormItem>
             <FormItem
               {...formItemLayout}
               label={<span>邀评人<em className={styles.optional}>（选填）</em></span>}
             >
-              {getFieldDecorator('invites')(
-                <Input placeholder="请直接 @姓名／工号，最多可邀请 5 人" />
-              )}
+              {getFieldDecorator('invites')(<Input placeholder="请直接 @姓名／工号，最多可邀请 5 人" />)}
             </FormItem>
             <FormItem
               {...formItemLayout}
               label={<span>权重<em className={styles.optional}>（选填）</em></span>}
             >
-              {getFieldDecorator('weight')(
-                <InputNumber placeholder="请输入" min={0} max={100} />
-              )}
+              {getFieldDecorator('weight')(<InputNumber placeholder="请输入" min={0} max={100} />)}
               <span>%</span>
             </FormItem>
             <FormItem
@@ -145,28 +129,24 @@ class BasicForms extends PureComponent {
               <div>
                 {getFieldDecorator('public', {
                   initialValue: '1',
-                })(
-                  <Radio.Group>
-                    <Radio value="1">公开</Radio>
-                    <Radio value="2">部分公开</Radio>
-                    <Radio value="3">不公开</Radio>
-                  </Radio.Group>
-                )}
+                })(<Radio.Group>
+                  <Radio value="1">公开</Radio>
+                  <Radio value="2">部分公开</Radio>
+                  <Radio value="3">不公开</Radio>
+                </Radio.Group>)}
                 <FormItem style={{ marginBottom: 0 }}>
-                  {getFieldDecorator('publicUsers')(
-                    <Select
-                      mode="multiple"
-                      placeholder="公开给"
-                      style={{
+                  {getFieldDecorator('publicUsers')(<Select
+                    mode="multiple"
+                    placeholder="公开给"
+                    style={{
                         margin: '8px 0',
                         display: getFieldValue('public') === '2' ? 'block' : 'none',
                       }}
-                    >
-                      <Option value="1">同事甲</Option>
-                      <Option value="2">同事乙</Option>
-                      <Option value="3">同事丙</Option>
-                    </Select>
-                  )}
+                  >
+                    <Option value="1">同事甲</Option>
+                    <Option value="2">同事乙</Option>
+                    <Option value="3">同事丙</Option>
+                  </Select>)}
                 </FormItem>
               </div>
             </FormItem>
@@ -182,4 +162,4 @@ class BasicForms extends PureComponent {
     );
   }
 }
-export default connect(({ loading }) => ({ submitting: loading.effects['form/submitRegularForm']}))(Form.create()(BasicForms))
+export default connect(({ loading }) => ({ submitting: loading.effects['form/submitRegularForm'] }))(Form.create()(BasicForms));

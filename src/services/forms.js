@@ -1,14 +1,14 @@
-import { request, config } from 'utils'
+import { request, config } from 'utils';
 
-const { api } = config
-const { basicForm, stepForm, advancedForm } = api
+const { api } = config;
+const { basicForm, stepForm, advancedForm } = api;
 
 export async function postBasicForm (params) {
   return request({
     url: basicForm,
     method: 'post',
     data: params,
-  })
+  });
 }
 
 export async function postStepForm (params) {
@@ -16,7 +16,7 @@ export async function postStepForm (params) {
     url: stepForm,
     method: 'post',
     data: params,
-  })
+  });
 }
 
 export async function postAdvancedForm (params) {
@@ -24,5 +24,5 @@ export async function postAdvancedForm (params) {
     url: advancedForm,
     method: 'post',
     data: params,
-  })
+  });
 }

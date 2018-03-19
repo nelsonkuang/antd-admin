@@ -3,7 +3,7 @@ import { Table, Button, Input, message, Popconfirm, Divider } from 'antd';
 import styles from './style.less';
 
 export default class TableForm extends PureComponent {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -11,14 +11,14 @@ export default class TableForm extends PureComponent {
       loading: false,
     };
   }
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if ('value' in nextProps) {
       this.setState({
         data: nextProps.value,
       });
     }
   }
-  getRowByKey(key, newData) {
+  getRowByKey (key, newData) {
     return (newData || this.state.data).filter(item => item.key === key)[0];
   }
   index = 0;
@@ -36,7 +36,7 @@ export default class TableForm extends PureComponent {
       this.setState({ data: newData });
     }
   }
-  remove(key) {
+  remove (key) {
     const newData = this.state.data.filter(item => item.key !== key);
     this.setState({ data: newData });
     this.props.onChange(newData);
@@ -54,12 +54,12 @@ export default class TableForm extends PureComponent {
     this.index += 1;
     this.setState({ data: newData });
   }
-  handleKeyPress(e, key) {
+  handleKeyPress (e, key) {
     if (e.key === 'Enter') {
       this.saveRow(e, key);
     }
   }
-  handleFieldChange(e, fieldName, key) {
+  handleFieldChange (e, fieldName, key) {
     const newData = this.state.data.map(item => ({ ...item }));
     const target = this.getRowByKey(key, newData);
     if (target) {
@@ -67,7 +67,7 @@ export default class TableForm extends PureComponent {
       this.setState({ data: newData });
     }
   }
-  saveRow(e, key) {
+  saveRow (e, key) {
     e.persist();
     this.setState({
       loading: true,
@@ -94,7 +94,7 @@ export default class TableForm extends PureComponent {
       });
     }, 500);
   }
-  cancel(e, key) {
+  cancel (e, key) {
     this.clickedCancel = true;
     e.preventDefault();
     const newData = this.state.data.map(item => ({ ...item }));
@@ -107,7 +107,7 @@ export default class TableForm extends PureComponent {
     this.setState({ data: newData });
     this.clickedCancel = false;
   }
-  render() {
+  render () {
     const columns = [{
       title: '成员姓名',
       dataIndex: 'name',

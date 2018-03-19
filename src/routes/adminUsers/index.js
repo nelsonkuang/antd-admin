@@ -1,24 +1,24 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { routerRedux } from 'dva/router'
-import { connect } from 'dva'
-import { Row, Col, Button, Popconfirm } from 'antd'
-import { Page } from 'components'
-import queryString from 'query-string'
-import List from './List'
-import Filter from './Filter'
-import Modal from './Modal'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { routerRedux } from 'dva/router';
+import { connect } from 'dva';
+import { Row, Col, Button, Popconfirm } from 'antd';
+import { Page } from 'components';
+import queryString from 'query-string';
+import List from './List';
+import Filter from './Filter';
+import Modal from './Modal';
 
 
 const AdminUsers = ({
   location, dispatch, adminUsers, loading,
 }) => {
-  location.query = queryString.parse(location.search)
-  const { query, pathname } = location
+  location.query = queryString.parse(location.search);
+  const { query, pathname } = location;
   const {
     list, pagination, currentItem, modalVisible, modalType, isMotion, selectedRowKeys,
-  } = adminUsers
-  const { pageSize } = pagination
+  } = adminUsers;
+  const { pageSize } = pagination;
 
   const modalProps = {
     item: modalType === 'create' ? {} : currentItem,
@@ -31,14 +31,14 @@ const AdminUsers = ({
       dispatch({
         type: `adminUsers/${modalType}`,
         payload: data,
-      })
+      });
     },
     onCancel () {
       dispatch({
         type: 'adminUsers/hideModal',
-      })
+      });
     },
-  }
+  };
 
   const listProps = {
     dataSource: list,
@@ -54,13 +54,13 @@ const AdminUsers = ({
           page: page.current,
           pageSize: page.pageSize,
         }),
-      }))
+      }));
     },
     onDeleteItem (id) {
       dispatch({
         type: 'adminUsers/delete',
         payload: id,
-      })
+      });
     },
     onEditItem (item) {
       dispatch({
@@ -69,7 +69,7 @@ const AdminUsers = ({
           modalType: 'update',
           currentItem: item,
         },
-      })
+      });
     },
     rowSelection: {
       selectedRowKeys,
@@ -79,10 +79,10 @@ const AdminUsers = ({
           payload: {
             selectedRowKeys: keys,
           },
-        })
+        });
       },
     },
-  }
+  };
 
   const filterProps = {
     isMotion,
@@ -97,7 +97,7 @@ const AdminUsers = ({
           page: 1,
           pageSize,
         }),
-      }))
+      }));
     },
     onSearch (fieldsValue) {
       fieldsValue.keyword.length ? dispatch(routerRedux.push({
@@ -108,7 +108,7 @@ const AdminUsers = ({
         },
       })) : dispatch(routerRedux.push({
         pathname: '/adminUsers',
-      }))
+      }));
     },
     onAdd () {
       dispatch({
@@ -116,12 +116,12 @@ const AdminUsers = ({
         payload: {
           modalType: 'create',
         },
-      })
+      });
     },
     switchIsMotion () {
-      dispatch({ type: 'adminUsers/switchIsMotion' })
+      dispatch({ type: 'adminUsers/switchIsMotion' });
     },
-  }
+  };
 
   const handleDeleteItems = () => {
     dispatch({
@@ -129,8 +129,8 @@ const AdminUsers = ({
       payload: {
         ids: selectedRowKeys,
       },
-    })
-  }
+    });
+  };
 
   return (
     <Page inner>
@@ -149,14 +149,14 @@ const AdminUsers = ({
       <List {...listProps} />
       {modalVisible && <Modal {...modalProps} />}
     </Page>
-  )
-}
+  );
+};
 
 AdminUsers.propTypes = {
   adminUsers: PropTypes.object,
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
-}
+};
 
-export default connect(({ adminUsers, loading }) => ({ adminUsers, loading }))(AdminUsers)
+export default connect(({ adminUsers, loading }) => ({ adminUsers, loading }))(AdminUsers);

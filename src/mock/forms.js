@@ -1,7 +1,7 @@
-const Mock = require('mockjs')
-const config = require('../utils/config')
+const Mock = require('mockjs');
+const config = require('../utils/config');
 
-const { apiPrefix } = config
+const { apiPrefix } = config;
 
 module.exports = {
 
@@ -20,4 +20,4 @@ module.exports = {
     res.json({ success: true, message: 'Ok' });
   },
 
-}
+};

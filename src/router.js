@@ -1,22 +1,22 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
-import { Switch, Route, Redirect, routerRedux } from 'dva/router'
-import dynamic from 'dva/dynamic'
-import App from 'routes/app'
+import { Switch, Route, Redirect, routerRedux } from 'dva/router';
+import dynamic from 'dva/dynamic';
+import App from 'routes/app';
 
-const { ConnectedRouter } = routerRedux
+const { ConnectedRouter } = routerRedux;
 
 const Routers = function ({ history, app }) {
   const error = dynamic({
     app,
     component: () => import('./routes/error'),
-  })
+  });
   const error401 = dynamic({
     app,
     component: () => import('./routes/error/401'),
-  })
+  });
   const routes = [
     {
       path: '/dashboard',
@@ -96,7 +96,7 @@ const Routers = function ({ history, app }) {
       models: () => [import('./models/form')],
       component: () => import('./routes/forms/AdvancedForm'),
     },
-  ]
+  ];
 
   return (
     <LocaleProvider locale={zhCN}>
@@ -113,7 +113,7 @@ const Routers = function ({ history, app }) {
                     app,
                     ...dynamics,
                   })}
-                /> 
+                />
               ))
             }
             <Route component={error} />
@@ -121,12 +121,12 @@ const Routers = function ({ history, app }) {
         </App>
       </ConnectedRouter>
     </LocaleProvider>
-  )
-}
+  );
+};
 
 Routers.propTypes = {
   history: PropTypes.object,
   app: PropTypes.object,
-}
+};
 
-export default Routers
+export default Routers;

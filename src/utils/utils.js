@@ -1,10 +1,10 @@
 import moment from 'moment';
 
-export function fixedZero(val) {
+export function fixedZero (val) {
   return val * 1 < 10 ? `0${val}` : val;
 }
 
-export function getTimeDistance(type) {
+export function getTimeDistance (type) {
   const now = new Date();
   const oneDay = 1000 * 60 * 60 * 24;
 
@@ -49,7 +49,7 @@ export function getTimeDistance(type) {
   }
 }
 
-export function getPlainNode(nodeList, parentPath = '') {
+export function getPlainNode (nodeList, parentPath = '') {
   const arr = [];
   nodeList.forEach((node) => {
     const item = node;
@@ -67,7 +67,7 @@ export function getPlainNode(nodeList, parentPath = '') {
   return arr;
 }
 
-export function digitUppercase(n) {
+export function digitUppercase (n) {
   const fraction = ['角', '分'];
   const digit = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
   const unit = [
@@ -94,7 +94,7 @@ export function digitUppercase(n) {
 }
 
 
-function getRelation(str1, str2) {
+function getRelation (str1, str2) {
   if (str1 === str2) {
     console.warn('Two path are equal!');  // eslint-disable-line
   }
@@ -108,7 +108,7 @@ function getRelation(str1, str2) {
   return 3;
 }
 
-function getRenderArr(routes) {
+function getRenderArr (routes) {
   let renderArr = [];
   renderArr.push(routes[0]);
   for (let i = 1; i < routes.length; i += 1) {
@@ -130,7 +130,7 @@ function getRenderArr(routes) {
  * @param {string} path
  * @param {routerData} routerData
  */
-export function getRoutes(path, routerData) {
+export function getRoutes (path, routerData) {
   let routes = Object.keys(routerData).filter(routePath =>
     routePath.indexOf(path) === 0 && routePath !== path);
   // Replace path to '' eg. path='user' /user/name => name
@@ -154,6 +154,6 @@ export function getRoutes(path, routerData) {
 /* eslint no-useless-escape:0 */
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/g;
 
-export function isUrl(path) {
+export function isUrl (path) {
   return reg.test(path);
 }

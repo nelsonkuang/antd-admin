@@ -1,27 +1,27 @@
-import React from 'react'
-import { Editor } from 'components'
-import { convertToRaw } from 'draft-js'
-import { Row, Col, Card } from 'antd'
-import draftToHtml from 'draftjs-to-html'
-import draftToMarkdown from 'draftjs-to-markdown'
+import React from 'react';
+import { Editor } from 'components';
+import { convertToRaw } from 'draft-js';
+import { Row, Col, Card } from 'antd';
+import draftToHtml from 'draftjs-to-html';
+import draftToMarkdown from 'draftjs-to-markdown';
 // import emoji from 'emoji'
 // import 'emoji/lib/emoji.css'
 // https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js
 
 export default class EditorPage extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
     this.state = {
       editorContent: null,
-    }
+    };
   }
   onEditorStateChange = (editorContent) => {
     this.setState({
       editorContent,
-    })
+    });
   }
   componentDidMount () {
-    /*let _this = this;
+    /* let _this = this;
     _this.editor.querySelector('.rdw-emoji-wrapper').onclick = function () {
       setTimeout (function () {
         _this.editor.querySelectorAll('.rdw-emoji-modal .rdw-emoji-icon').forEach(item => {
@@ -31,19 +31,19 @@ export default class EditorPage extends React.Component {
     } */ // emoji是个坑
   }
   render () {
-    const { editorContent } = this.state
+    const { editorContent } = this.state;
     const colProps = {
       lg: 12,
       md: 24,
-    }
+    };
     const textareaStyle = {
       minHeight: 496,
       width: '100%',
       background: '#f7f7f7',
       borderColor: '#F1F1F1',
       padding: '16px 8px',
-    }
-    return (<div className="content-inner" ref={ editor => { this.editor = editor }} >
+    };
+    return (<div className="content-inner" ref={(editor) => { this.editor = editor; }} >
       <Row gutter={32}>
         <Col {...colProps}>
           <Card title="Editor" style={{ overflow: 'visible' }}>
@@ -65,7 +65,7 @@ export default class EditorPage extends React.Component {
                   urlEnabled: true,
                   uploadEnabled: true,
                   alignmentEnabled: true,
-                  uploadCallback: function () {
+                  uploadCallback () {
                     // 这里处理上传图片代码
                   },
                   inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
@@ -107,6 +107,6 @@ export default class EditorPage extends React.Component {
           </Card>
         </Col>
       </Row>
-    </div>)
+    </div>);
   }
 }

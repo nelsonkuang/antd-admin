@@ -15,8 +15,10 @@ const formItemLayout = {
 };
 
 class Step2 extends React.PureComponent {
-  render() {
-    const { form, data, dispatch, submitting } = this.props;
+  render () {
+    const {
+      form, data, dispatch, submitting,
+    } = this.props;
     const { getFieldDecorator, validateFields } = form;
     const onPrev = () => {
       dispatch(routerRedux.push('/form/step-form'));
@@ -83,9 +85,7 @@ class Step2 extends React.PureComponent {
             rules: [{
               required: true, message: '需要支付密码才能进行支付',
             }],
-          })(
-            <Input type="password" autoComplete="off" style={{ width: '80%' }} />
-          )}
+          })(<Input type="password" autoComplete="off" style={{ width: '80%' }} />)}
         </Form.Item>
         <Form.Item
           style={{ marginBottom: 8 }}

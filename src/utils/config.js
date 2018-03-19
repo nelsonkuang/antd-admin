@@ -1,5 +1,5 @@
-const APIV1 = '/api/v1'
-const APIV2 = '/api/v2'
+const APIV1 = '/api/v1';
+const APIV2 = '/api/v2';
 
 module.exports = {
   name: 'AntD Admin',
@@ -31,4 +31,4 @@ module.exports = {
     v1test: `${APIV1}/test`,
     v2test: `${APIV2}/test`,
   },
-}
+};

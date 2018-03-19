@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import {postBasicForm, postStepForm, postAdvancedForm} from 'services/forms'
+import { postBasicForm, postStepForm, postAdvancedForm } from 'services/forms';
 
 export default {
   namespace: 'form',
@@ -15,13 +15,13 @@ export default {
   },
 
   effects: {
-    *submitRegularForm({ payload }, { call }) {
+    * submitRegularForm ({ payload }, { call }) {
       const data = yield call(postBasicForm, payload);
-      if(data.success) {
+      if (data.success) {
         message.success('提交成功');
       }
     },
-    *submitStepForm({ payload }, { call, put }) {
+    * submitStepForm ({ payload }, { call, put }) {
       yield call(postStepForm, payload);
       yield put({
         type: 'saveStepFormData',
@@ -29,16 +29,16 @@ export default {
       });
       yield put(routerRedux.push('/form/step-form/result'));
     },
-    *submitAdvancedForm({ payload }, { call }) {
+    * submitAdvancedForm ({ payload }, { call }) {
       const data = yield call(postAdvancedForm, payload);
-      if(data.success) {
+      if (data.success) {
         message.success('提交成功');
       }
     },
   },
 
   reducers: {
-    saveStepFormData(state, { payload }) {
+    saveStepFormData (state, { payload }) {
       return {
         ...state,
         step: {

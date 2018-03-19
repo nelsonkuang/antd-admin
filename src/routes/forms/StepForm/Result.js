@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Route, Redirect, Switch } from 'dva/router';
 import { Card, Steps } from 'antd';
-import { Page } from 'components'
+import { Page } from 'components';
 import Step3 from './Step3';
 
 import styles from '../style.less';
@@ -9,7 +9,7 @@ import styles from '../style.less';
 const { Step } = Steps;
 
 export default class Result extends PureComponent {
-  getCurrentStep() {
+  getCurrentStep () {
     const { location } = this.props;
     const { pathname } = location;
     const pathList = pathname.split('/');
@@ -20,7 +20,7 @@ export default class Result extends PureComponent {
       default: return 0;
     }
   }
-  render() {
+  render () {
     const { match } = this.props;
     console.log(match);
     const currentStep = this.getCurrentStep();

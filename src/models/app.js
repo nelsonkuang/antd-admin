@@ -1,15 +1,15 @@
 /* global window */
 /* global document */
 /* global location */
-import { routerRedux } from 'dva/router'
-import { parse } from 'qs'
-import config from 'config'
-import { EnumRoleType } from 'enums'
-import { query, logout } from 'services/app'
-import * as menusService from 'services/menus'
-import queryString from 'query-string'
+import { routerRedux } from 'dva/router';
+import { parse } from 'qs';
+import config from 'config';
+import { EnumRoleType } from 'enums';
+import { query, logout } from 'services/app';
+import * as menusService from 'services/menus';
+import queryString from 'query-string';
 
-const { prefix } = config
+const { prefix } = config;
 
 export default {
   namespace: 'app', // APP的state初始状态
@@ -44,19 +44,19 @@ export default {
             locationPathname: location.pathname,
             locationQuery: queryString.parse(location.search), // 把参数串格式转为json obj
           },
-        })
-      })
+        });
+      });
     },
 
     setup ({ dispatch }) { // 初始化，监听resize动作
-      dispatch({ type: 'query' })
-      let tid
+      dispatch({ type: 'query' });
+      let tid;
       window.onresize = () => {
-        clearTimeout(tid)
+        clearTimeout(tid);
         tid = setTimeout(() => {
-          dispatch({ type: 'changeNavbar' })
-        }, 300)
-      }
+          dispatch({ type: 'changeNavbar' });
+        }, 300);
+      };
     },
 
   },
@@ -65,24 +65,24 @@ export default {
     * query ({
       payload,
     }, { call, put, select }) {
-      const { success, user } = yield call(query, payload)
-      const { locationPathname } = yield select(_ => _.app)
+      const { success, user } = yield call(query, payload);
+      const { locationPathname } = yield select(_ => _.app);
       if (success && user) { // 如果已登录，动态生成菜单并记录路由
-        const { list } = yield call(menusService.query)
-        const { permissions } = user
-        let menu = list 
+        const { list } = yield call(menusService.query);
+        const { permissions } = user;
+        let menu = list;
         if (permissions.role === EnumRoleType.ADMIN) { // 枚举类型，可代表多种类型的变量，如果是超级管理员则可以看到所有的菜单
-          permissions.visit = list.map(item => item.id)
+          permissions.visit = list.map(item => item.id);
         } else {
           menu = list.filter((item) => { // 过滤没有权限的菜单，用[true, true, true].every(_ => _)来过滤，该菜单父菜单有权限才可以显示
             const cases = [
               permissions.visit.includes(item.id),
               item.mpid ? permissions.visit.includes(item.mpid) || item.mpid === '-1' : true,
               item.bpid ? permissions.visit.includes(item.bpid) : true,
-            ]
+            ];
             // console.log(cases);
-            return cases.every(_ => _)
-          })
+            return cases.every(_ => _);
+          });
 
           // console.log(menu);
         }
@@ -93,38 +93,38 @@ export default {
             permissions,
             menu,
           },
-        })
+        });
         if (location.pathname === '/login') { // 路由记录为dashboard
           yield put(routerRedux.push({
             pathname: '/dashboard',
-          }))
+          }));
         }
       } else if (config.openPages && config.openPages.indexOf(locationPathname) < 0) { // 如果未登录，跳登录页并设置(search)url带from参数
-        yield put(routerRedux.push({ 
+        yield put(routerRedux.push({
           pathname: '/login',
           search: queryString.stringify({
             from: locationPathname,
           }),
-        }))
+        }));
       }
     },
 
     * logout ({
       payload,
     }, { call, put }) {
-      const data = yield call(logout, parse(payload)) // 登出时，如果传payload为参数，就用parse把参数转化为json对象，本例子中 payload 为undefined 则 parse(payload) 为{}
+      const data = yield call(logout, parse(payload)); // 登出时，如果传payload为参数，就用parse把参数转化为json对象，本例子中 payload 为undefined 则 parse(payload) 为{}
       if (data.success) {
-        yield put({ type: 'query' })
+        yield put({ type: 'query' });
       } else {
-        throw (data)
+        throw (data);
       }
     },
 
     * changeNavbar (action, { put, select }) {
-      const { app } = yield (select(_ => _))
-      const isNavbar = document.body.clientWidth < 769
+      const { app } = yield (select(_ => _));
+      const isNavbar = document.body.clientWidth < 769;
       if (isNavbar !== app.isNavbar) {
-        yield put({ type: 'handleNavbar', payload: isNavbar })
+        yield put({ type: 'handleNavbar', payload: isNavbar });
       }
     },
 
@@ -134,44 +134,44 @@ export default {
       return {
         ...state,
         ...payload,
-      }
+      };
     },
 
     switchSider (state) {
-      window.localStorage.setItem(`${prefix}siderFold`, !state.siderFold)
+      window.localStorage.setItem(`${prefix}siderFold`, !state.siderFold);
       return {
         ...state,
         siderFold: !state.siderFold,
-      }
+      };
     },
 
     switchTheme (state) {
-      window.localStorage.setItem(`${prefix}darkTheme`, !state.darkTheme)
+      window.localStorage.setItem(`${prefix}darkTheme`, !state.darkTheme);
       return {
         ...state,
         darkTheme: !state.darkTheme,
-      }
+      };
     },
 
     switchMenuPopver (state) {
       return {
         ...state,
         menuPopoverVisible: !state.menuPopoverVisible,
-      }
+      };
     },
 
     handleNavbar (state, { payload }) {
       return {
         ...state,
         isNavbar: payload,
-      }
+      };
     },
 
     handleNavOpenKeys (state, { payload: navOpenKeys }) {
       return {
         ...state,
         ...navOpenKeys,
-      }
+      };
     },
   },
-}
+};

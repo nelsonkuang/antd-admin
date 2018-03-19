@@ -6,7 +6,7 @@ import Result from '../../../components/Result';
 import styles from './style.less';
 
 class Step3 extends React.PureComponent {
-  render() {
+  render () {
     const { dispatch, data } = this.props;
     const onFinish = () => {
       dispatch(routerRedux.push('/form/step-form'));

@@ -1,8 +1,8 @@
-const qs = require('qs')
-const Mock = require('mockjs')
-const config = require('../utils/config')
+const qs = require('qs');
+const Mock = require('mockjs');
+const config = require('../utils/config');
 
-const { apiPrefix } = config
+const { apiPrefix } = config;
 
 let usersListData = Mock.mock({
   'data|80-100': [
@@ -17,20 +17,20 @@ let usersListData = Mock.mock({
       email: '@email',
       createTime: '@datetime',
       avatar () {
-        return Mock.Random.image('100x100', Mock.Random.color(), '#757575', 'png', this.nickName.substr(0, 1))
+        return Mock.Random.image('100x100', Mock.Random.color(), '#757575', 'png', this.nickName.substr(0, 1));
       },
     },
   ],
-})
+});
 
 
-let database = usersListData.data
+let database = usersListData.data;
 
 const EnumRoleType = {
   ADMIN: 'admin',
   DEFAULT: 'guest',
   DEVELOPER: 'developer',
-}
+};
 
 const userPermission = {
   DEFAULT: {
@@ -44,10 +44,10 @@ const userPermission = {
     visit: ['1', '2', '21', '7', '3', '4', '41', '42', '43', '44', '45', '46', '47', '5', '51', '52', '53', '6', '61', '62', '621', '622'],
     role: EnumRoleType.DEVELOPER,
   },
-}
+};
 
 const adminUsersDB = Mock.mock({
-  'data': [
+  data: [
     {
       id: '@id',
       username: 'admin',
@@ -72,289 +72,289 @@ const adminUsersDB = Mock.mock({
       email: '@email',
       permissions: userPermission.DEVELOPER,
       createTime: '@datetime',
-    }
-  ]
+    },
+  ],
 });
 
-let adminUsers = adminUsersDB.data
+let adminUsers = adminUsersDB.data;
 
 const queryArray = (array, key, keyAlias = 'key') => {
   if (!(array instanceof Array)) {
-    return null
+    return null;
   }
-  let data
+  let data;
 
   for (let item of array) {
     if (item[keyAlias] === key) {
-      data = item
-      break
+      data = item;
+      break;
     }
   }
 
   if (data) {
-    return data
+    return data;
   }
-  return null
-}
+  return null;
+};
 
 const NOTFOUND = {
   message: 'Not Found',
   documentation_url: 'http://localhost:8000/request',
-}
+};
 
 module.exports = {
 
   [`POST ${apiPrefix}/user/login`] (req, res) {
-    const { username, password } = req.body
-    const user = adminUsers.filter(item => item.username === username)
+    const { username, password } = req.body;
+    const user = adminUsers.filter(item => item.username === username);
 
     if (user.length > 0 && user[0].password === password) {
-      const now = new Date()
-      now.setDate(now.getDate() + 1) // cookie时间一天
+      const now = new Date();
+      now.setDate(now.getDate() + 1); // cookie时间一天
       res.cookie('token', JSON.stringify({ id: user[0].id, deadline: now.getTime() }), { // 登录成功，把token写到cookie，有效时间1天
         maxAge: 900000,
         httpOnly: true,
-      })
-      res.json({ success: true, message: 'Ok' })
+      });
+      res.json({ success: true, message: 'Ok' });
     } else {
-      res.status(400).end()
+      res.status(400).end();
     }
   },
 
   [`GET ${apiPrefix}/user/logout`] (req, res) {
-    res.clearCookie('token')
-    res.status(200).end()
+    res.clearCookie('token');
+    res.status(200).end();
   },
 
   [`GET ${apiPrefix}/user`] (req, res) {
-    const cookie = req.headers.cookie || ''
-    const cookies = qs.parse(cookie.replace(/\s/g, ''), { delimiter: ';' })
-    const response = {}
-    const user = {}
+    const cookie = req.headers.cookie || '';
+    const cookies = qs.parse(cookie.replace(/\s/g, ''), { delimiter: ';' });
+    const response = {};
+    const user = {};
     if (!cookies.token) {
-      res.status(200).send({ message: 'Not Login' })
-      return
+      res.status(200).send({ message: 'Not Login' });
+      return;
     }
-    const token = JSON.parse(cookies.token)
+    const token = JSON.parse(cookies.token);
     if (token) {
-      response.success = token.deadline > new Date().getTime()
+      response.success = token.deadline > new Date().getTime();
     }
     if (response.success) {
-      const userItem = adminUsers.filter(_ => _.id === token.id)
+      const userItem = adminUsers.filter(_ => _.id === token.id);
       if (userItem.length > 0) {
-        user.permissions = userItem[0].permissions
-        user.username = userItem[0].username
-        user.id = userItem[0].id
+        user.permissions = userItem[0].permissions;
+        user.username = userItem[0].username;
+        user.id = userItem[0].id;
       }
     }
-    response.user = user
-    res.json(response)
+    response.user = user;
+    res.json(response);
   },
 
   [`GET ${apiPrefix}/users`] (req, res) {
-    const { query } = req
-    let { pageSize, page, ...other } = query
-    pageSize = pageSize || 10
-    page = page || 1
+    const { query } = req;
+    let { pageSize, page, ...other } = query;
+    pageSize = pageSize || 10;
+    page = page || 1;
 
-    let newData = database
+    let newData = database;
     for (let key in other) {
       if ({}.hasOwnProperty.call(other, key)) {
         newData = newData.filter((item) => {
           if ({}.hasOwnProperty.call(item, key)) {
             if (key === 'address') {
-              return other[key].every(iitem => item[key].indexOf(iitem) > -1)
+              return other[key].every(iitem => item[key].indexOf(iitem) > -1);
             } else if (key === 'createTime') {
-              const start = new Date(other[key][0]).getTime()
-              const end = new Date(other[key][1]).getTime()
-              const now = new Date(item[key]).getTime()
+              const start = new Date(other[key][0]).getTime();
+              const end = new Date(other[key][1]).getTime();
+              const now = new Date(item[key]).getTime();
 
               if (start && end) {
-                return now >= start && now <= end
+                return now >= start && now <= end;
               }
-              return true
+              return true;
             }
-            return String(item[key]).trim().indexOf(decodeURI(other[key]).trim()) > -1
+            return String(item[key]).trim().indexOf(decodeURI(other[key]).trim()) > -1;
           }
-          return true
-        })
+          return true;
+        });
       }
     }
 
     res.status(200).json({
       data: newData.slice((page - 1) * pageSize, page * pageSize),
       total: newData.length,
-    })
+    });
   },
 
   [`DELETE ${apiPrefix}/users`] (req, res) {
-    const { ids } = req.body
-    database = database.filter(item => !ids.some(_ => _ === item.id))
-    res.status(204).end()
+    const { ids } = req.body;
+    database = database.filter(item => !ids.some(_ => _ === item.id));
+    res.status(204).end();
   },
 
 
   [`POST ${apiPrefix}/user`] (req, res) {
-    const newData = req.body
-    newData.createTime = Mock.mock('@now')
-    newData.avatar = newData.avatar || Mock.Random.image('100x100', Mock.Random.color(), '#757575', 'png', newData.nickName.substr(0, 1))
-    newData.id = Mock.mock('@id')
+    const newData = req.body;
+    newData.createTime = Mock.mock('@now');
+    newData.avatar = newData.avatar || Mock.Random.image('100x100', Mock.Random.color(), '#757575', 'png', newData.nickName.substr(0, 1));
+    newData.id = Mock.mock('@id');
 
-    database.unshift(newData)
+    database.unshift(newData);
 
-    res.status(200).end()
+    res.status(200).end();
   },
 
   [`GET ${apiPrefix}/user/:id`] (req, res) {
-    const { id } = req.params
-    const data = queryArray(database, id, 'id')
+    const { id } = req.params;
+    const data = queryArray(database, id, 'id');
     if (data) {
-      res.status(200).json(data)
+      res.status(200).json(data);
     } else {
-      res.status(404).json(NOTFOUND)
+      res.status(404).json(NOTFOUND);
     }
   },
 
   [`DELETE ${apiPrefix}/user/:id`] (req, res) {
-    const { id } = req.params
-    const data = queryArray(database, id, 'id')
+    const { id } = req.params;
+    const data = queryArray(database, id, 'id');
     if (data) {
-      database = database.filter(item => item.id !== id)
-      res.status(204).end()
+      database = database.filter(item => item.id !== id);
+      res.status(204).end();
     } else {
-      res.status(404).json(NOTFOUND)
+      res.status(404).json(NOTFOUND);
     }
   },
 
   [`PATCH ${apiPrefix}/user/:id`] (req, res) {
-    const { id } = req.params
-    const editItem = req.body
-    let isExist = false
+    const { id } = req.params;
+    const editItem = req.body;
+    let isExist = false;
 
     database = database.map((item) => {
       if (item.id === id) {
-        isExist = true
-        return Object.assign({}, item, editItem)
+        isExist = true;
+        return Object.assign({}, item, editItem);
       }
-      return item
-    })
+      return item;
+    });
 
     if (isExist) {
-      res.status(201).end()
+      res.status(201).end();
     } else {
-      res.status(404).json(NOTFOUND)
+      res.status(404).json(NOTFOUND);
     }
   },
 
   [`GET ${apiPrefix}/adminUsers`] (req, res) {
-    const { query } = req
-    let { pageSize, page, ...other } = query
-    pageSize = pageSize || 10
-    page = page || 1
+    const { query } = req;
+    let { pageSize, page, ...other } = query;
+    pageSize = pageSize || 10;
+    page = page || 1;
 
-    let newData = adminUsers
+    let newData = adminUsers;
     for (let key in other) {
       if ({}.hasOwnProperty.call(other, key)) {
         newData = newData.filter((item) => {
           if ({}.hasOwnProperty.call(item, key)) {
             if (key === 'createTime') {
-              const start = new Date(other[key][0]).getTime()
-              const end = new Date(other[key][1]).getTime()
-              const now = new Date(item[key]).getTime()
+              const start = new Date(other[key][0]).getTime();
+              const end = new Date(other[key][1]).getTime();
+              const now = new Date(item[key]).getTime();
 
               if (start && end) {
-                return now >= start && now <= end
+                return now >= start && now <= end;
               }
-              return true
+              return true;
             }
-            return String(item[key]).trim().indexOf(decodeURI(other[key]).trim()) > -1
+            return String(item[key]).trim().indexOf(decodeURI(other[key]).trim()) > -1;
           }
-          return true
-        })
+          return true;
+        });
       }
     }
 
     res.status(200).json({
       data: newData.slice((page - 1) * pageSize, page * pageSize),
       total: newData.length,
-    })
+    });
   },
 
   [`DELETE ${apiPrefix}/adminUsers`] (req, res) {
-    const { ids } = req.body
-    adminUsers = adminUsers.filter(item => !ids.some(_ => _ === item.id))
-    res.status(204).end()
+    const { ids } = req.body;
+    adminUsers = adminUsers.filter(item => !ids.some(_ => _ === item.id));
+    res.status(204).end();
   },
 
 
   [`POST ${apiPrefix}/adminUser`] (req, res) {
-    const newData = req.body
-    newData.createTime = Mock.mock('@now')
-    newData.id = Mock.mock('@id')
+    const newData = req.body;
+    newData.createTime = Mock.mock('@now');
+    newData.id = Mock.mock('@id');
     switch (newData.role) {
       case EnumRoleType.ADMIN:
-        newData.permissions = userPermission.ADMIN
+        newData.permissions = userPermission.ADMIN;
         break;
       case EnumRoleType.DEVELOPER:
-        newData.permissions = userPermission.DEVELOPER
-        break; 
+        newData.permissions = userPermission.DEVELOPER;
+        break;
       default:
-        newData.permissions = userPermission.DEFAULT
+        newData.permissions = userPermission.DEFAULT;
     }
-    adminUsers.unshift(newData)
-    console.log(adminUsers)
-    res.status(200).end()
+    adminUsers.unshift(newData);
+    console.log(adminUsers);
+    res.status(200).end();
   },
 
   [`GET ${apiPrefix}/adminUser/:id`] (req, res) {
-    const { id } = req.params
-    const data = queryArray(adminUsers, id, 'id')
+    const { id } = req.params;
+    const data = queryArray(adminUsers, id, 'id');
     if (data) {
-      res.status(200).json(data)
+      res.status(200).json(data);
     } else {
-      res.status(404).json(NOTFOUND)
+      res.status(404).json(NOTFOUND);
     }
   },
 
   [`DELETE ${apiPrefix}/adminUser/:id`] (req, res) {
-    const { id } = req.params
-    const data = queryArray(adminUsers, id, 'id')
+    const { id } = req.params;
+    const data = queryArray(adminUsers, id, 'id');
     if (data) {
-      adminUsers = adminUsers.filter(item => item.id !== id)
-      res.status(204).end()
+      adminUsers = adminUsers.filter(item => item.id !== id);
+      res.status(204).end();
     } else {
-      res.status(404).json(NOTFOUND)
+      res.status(404).json(NOTFOUND);
     }
   },
 
   [`PATCH ${apiPrefix}/adminUser/:id`] (req, res) {
-    const { id } = req.params
-    const editItem = req.body
-    let isExist = false
+    const { id } = req.params;
+    const editItem = req.body;
+    let isExist = false;
 
     adminUsers = adminUsers.map((item) => {
       if (item.id === id) {
-        isExist = true
+        isExist = true;
         switch (editItem.role) {
           case EnumRoleType.ADMIN:
-            editItem.permissions = userPermission.ADMIN
+            editItem.permissions = userPermission.ADMIN;
             break;
           case EnumRoleType.DEVELOPER:
-            editItem.permissions = userPermission.DEVELOPER
-            break; 
+            editItem.permissions = userPermission.DEVELOPER;
+            break;
           default:
-            editItem.permissions = userPermission.DEFAULT
+            editItem.permissions = userPermission.DEFAULT;
         }
-        return Object.assign({}, item, editItem)
+        return Object.assign({}, item, editItem);
       }
-      return item
-    })
+      return item;
+    });
 
     if (isExist) {
-      console.log(adminUsers)
-      res.status(201).end()
+      console.log(adminUsers);
+      res.status(201).end();
     } else {
-      res.status(404).json(NOTFOUND)
+      res.status(404).json(NOTFOUND);
     }
   },
-}
+};

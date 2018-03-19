@@ -16,7 +16,7 @@ const formItemLayout = {
 };
 
 class Step1 extends React.PureComponent {
-  render() {
+  render () {
     const { form, dispatch, data } = this.props;
     const { getFieldDecorator, validateFields } = form;
     const onValidateForm = () => {
@@ -40,11 +40,9 @@ class Step1 extends React.PureComponent {
             {getFieldDecorator('payAccount', {
               initialValue: data.payAccount,
               rules: [{ required: true, message: '请选择付款账户' }],
-            })(
-              <Select placeholder="test@example.com">
-                <Option value="ant-design@alipay.com">ant-design@alipay.com</Option>
-              </Select>
-            )}
+            })(<Select placeholder="test@example.com">
+              <Option value="ant-design@alipay.com">ant-design@alipay.com</Option>
+            </Select>)}
           </Form.Item>
           <Form.Item
             {...formItemLayout}
@@ -61,9 +59,7 @@ class Step1 extends React.PureComponent {
                   { required: true, message: '请输入收款人账户' },
                   { type: 'email', message: '账户名应为邮箱格式' },
                 ],
-              })(
-                <Input style={{ width: 'calc(100% - 100px)' }} placeholder="test@example.com" />
-              )}
+              })(<Input style={{ width: 'calc(100% - 100px)' }} placeholder="test@example.com" />)}
             </Input.Group>
           </Form.Item>
           <Form.Item
@@ -73,9 +69,7 @@ class Step1 extends React.PureComponent {
             {getFieldDecorator('receiverName', {
               initialValue: data.receiverName,
               rules: [{ required: true, message: '请输入收款人姓名' }],
-            })(
-              <Input placeholder="请输入收款人姓名" />
-            )}
+            })(<Input placeholder="请输入收款人姓名" />)}
           </Form.Item>
           <Form.Item
             {...formItemLayout}
@@ -87,9 +81,7 @@ class Step1 extends React.PureComponent {
                 { required: true, message: '请输入转账金额' },
                 { pattern: /^(\d+)((?:\.\d+)?)$/, message: '请输入合法金额数字' },
               ],
-            })(
-              <Input prefix="￥" placeholder="请输入金额" />
-            )}
+            })(<Input prefix="￥" placeholder="请输入金额" />)}
           </Form.Item>
           <Form.Item
             wrapperCol={{
