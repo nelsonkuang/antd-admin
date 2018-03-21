@@ -119,7 +119,18 @@ const App = ({
           <Header {...headerProps} />
           <Content>
             <Bread {...breadProps} />
-            { pathname === '/' && !hasPermission && <Error401 /> }
+            { pathname === '/' && !hasPermission && <div style={{
+                display:'block',
+                textAlign:'center',
+                width:'100vw',
+                height:'100vh',
+                lineHeight:'100vh',
+                backgroundColor:'#fff',
+                position:'fixed',
+                top:0,
+                left:0,
+                zIndex:9999,
+              }}>请先登录，跳转中</div> }
             { hasPermission ? children : <Error /> }
           </Content>
           <Footer >
