@@ -116,6 +116,7 @@ const Routers = function ({ history, app }) {
                 />
               ))
             }
+            <Route exact path="/error/401" component={error401} />
             <Route component={error} />
           </Switch>
         </App>

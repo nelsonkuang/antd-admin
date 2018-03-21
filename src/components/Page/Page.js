@@ -17,6 +17,7 @@ export default class Page extends Component {
       <div
         className={classnames(className, {
           [styles.contentInner]: inner,
+          [styles.contentOutter]: !inner,
         })}
         style={loading ? loadingStyle : null}
       >

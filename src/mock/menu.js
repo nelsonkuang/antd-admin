@@ -186,15 +186,15 @@ let database = [
     id: '621',
     bpid: '62',
     mpid: '62',
-    name: 'Test Navigation21',
-    route: '/navigation/navigation2/navigation1',
+    name: '404 Not Found',
+    route: '/error',
   },
   {
     id: '622',
     bpid: '62',
     mpid: '62',
-    name: 'Test Navigation22',
-    route: '/navigation/navigation2/navigation2',
+    name: '401 Unauthorized',
+    route: '/error/401',
   },
 ];
 
